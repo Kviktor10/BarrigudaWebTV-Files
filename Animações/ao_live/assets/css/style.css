@@ -1,0 +1,124 @@
+/* style.css */
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #050011; 
+    overflow: hidden;
+    font-family: sans-serif;
+}
+
+/* Fundo da Via Láctea se movendo lentamente */
+body::before {
+    content: "";
+    position: absolute;
+    top: -20%; left: -20%; 
+    width: 140%; height: 140%;
+    background-color: linear-gradient(left, #000, #113, #777);
+    background-size: cover;
+    background-position: center;
+    z-index: -1;
+    animation: moveGalaxy 35s linear infinite alternate;
+}
+
+/* Container do universo */
+#universe {
+    width: 100vw;
+    height: 100vh;
+    perspective: 600px; /* Cria a profundidade 3D */
+    transform-style: preserve-3d;
+}
+
+/* Estilo base das estrelas */
+.star {
+    position: absolute;
+    border-radius: 50%; /* Mantém elas redondas */
+    opacity: 0.8;
+    animation: travel 4s linear infinite;
+}
+
+#logo-barriguda {
+    /* 1. Tira o elemento do fluxo normal e permite posicionar na tela toda */
+    position: fixed; 
+    
+    /* 2. Joga a ponta superior esquerda da logo para o centro exato da tela */
+    top: 50%;
+    left: 50%;
+    
+    /* 3. Puxa a logo de volta pela metade do próprio tamanho para centralizar perfeitamente */
+    transform: translate(-50%, -50%);
+    
+    /* 4. Garante que a logo fique por cima das estrelas e do fundo */
+    z-index: 100;
+
+    /* --- Seus estilos originais mantidos abaixo --- */
+    display: flex;
+    flex-direction: row;
+    padding: 25px;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+/* A animação clássica de viagem pelo espaço (sem distorcer) */
+@keyframes travel {
+    from {
+        transform: translateZ(-1000px); /* Começa longe */
+        opacity: 0;
+    }
+    10% {
+        opacity: 1; /* Aparece na tela */
+    }
+    to {
+        transform: translateZ(600px); /* Passa por você */
+        opacity: 0;
+    }
+}
+
+/* Movimento de deslocamento do fundo */
+@keyframes moveGalaxy {
+    0% { transform: scale(1) rotate(0deg); }
+    100% { transform: scale(1.2) rotate(3deg); }
+}
+
+/* --- BOX "AO VIVO" CENTRALIZADO INDEPENDENTE DE RESOLUÇÃO --- */
+#live-badge {
+    position: fixed;
+    bottom: 60px; /* Fica sempre a 60px do final da tela */
+    
+    /* A MÁGICA DA RESOLUÇÃO ESTÁ AQUI: */
+    left: 50%; /* Joga para 50% da largura da tela, seja ela qual for */
+    transform: translateX(-50%); /* Puxa o botão de volta para ele ficar alinhado pelo meio, não pelo canto */
+    
+    z-index: 100;
+    
+    background-color: rgba(220, 20, 60, 0.85);
+    color: white;
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
+    
+    padding: 30px;
+    text-align: center;
+    border-radius: 8px;
+    font-weight: 800;
+    font-size: 1.8rem;
+    letter-spacing: 1px;
+    width: 200px;
+    
+    /* Animação de piscar */
+    animation: pulseBlink 1.5s infinite ease-in-out;
+}
+
+/* É muito importante colocar o translateX(-50%) aqui também para a animação não tirar o botão do centro */
+@keyframes pulseBlink {
+    0% { transform: translateX(-50%) scale(1); opacity: 1; }
+    50% { transform: translateX(-50%) scale(1.05); opacity: 0.3; }
+    100% { transform: translateX(-50%) scale(1); opacity: 1; }
+}
+
+/* Incluímos o translateX(-50%) aqui para a animação não tirar o botão do centro */
+@keyframes pulseBlink {
+    0% { transform: translateX(-50%) scale(1); opacity: 1; }
+    50% { transform: translateX(-50%) scale(1.05); opacity: 0.3; }
+    100% { transform: translateX(-50%) scale(1); opacity: 1; }
+}

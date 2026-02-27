@@ -1,0 +1,64 @@
+
+
+/* style.css */
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #050011; 
+    overflow: hidden;
+}
+
+/* O fundo da galáxia se movendo lentamente */
+body::before {
+    content: "";
+    position: absolute;
+    top: -20%; left: -20%; 
+    width: 140%; height: 140%;
+    background-color: linear-gradient(left, #000, #113, #777);
+    background-size: cover;
+    background-position: center;
+    z-index: -1;
+    animation: moveGalaxy 35s linear infinite alternate;
+}
+
+#universe {
+    width: 100vw;
+    height: 100vh;
+    /* Aumentei a perspectiva para o rastro ficar mais dramático */
+    perspective: 800px; 
+    transform-style: preserve-3d;
+}
+
+.star {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.8;
+    /* Adicionei "will-change" para avisar o navegador que isso vai mudar muito, melhorando a performance */
+    will-change: transform, opacity;
+    animation: travel 4s linear infinite;
+}
+
+/* --- A MÁGICA DO RASTRO DE LUZ AQUI --- */
+@keyframes travel {
+    from {
+        /* Começa longe e com tamanho normal no eixo Z */
+        transform: translateZ(-1000px) scaleZ(1); 
+        opacity: 0;
+    }
+    5% {
+        opacity: 1; /* Aparece rápido */
+    }
+    to {
+        /* Termina perto e MUITO esticado no eixo Z (scaleZ 50) para criar o rastro */
+        transform: translateZ(600px) scaleZ(50); 
+        opacity: 0;
+    }
+}
+
+/* Animação do fundo da galáxia */
+@keyframes moveGalaxy {
+    0% { transform: scale(1) rotate(0deg); }
+    100% { transform: scale(1.2) rotate(3deg); }
+}
