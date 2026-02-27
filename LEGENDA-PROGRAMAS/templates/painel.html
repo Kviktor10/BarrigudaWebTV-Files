@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Controle Barriguda TV</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #121212; color: #e0e0e0; font-family: 'Segoe UI', sans-serif; }
+        .card { background-color: #1e1e1e; border: 1px solid #333; }
+        .form-control, .form-select { background-color: #2c2c2c; border: 1px solid #444; color: white; }
+        .form-control:focus { background-color: #333; color: white; border-color: #0093d3; }
+        .table-active-row { border-left: 5px solid #0093d3 !important; background-color: #2a3b47 !important; }
+        .btn-toggle-show { background-color: #28a745; color: white; font-weight: bold; }
+        .btn-toggle-hide { background-color: #ffc107; color: black; font-weight: bold; }
+    </style>
+</head>
+<body class="p-3">
+
+    <div class="container" style="max-width: 900px;">
+        <div class="d-flex align-items-center justify-content-between mb-4">
+            <h2 class="m-0">🎥 Painel Barriguda Web TV</h2>
+        </div>
+
+        <div class="row">
+            <div class="col-md-5 mb-4">
+                <div class="card p-3 h-100">
+                    <h5 class="card-title mb-3 text-info" id="formTitle">Novo Programa</h5>
+                    
+                    <form id="formSalvar">
+                        <input type="hidden" name="id" id="id_programa">
+
+                        <div class="mb-2">
+                            <label class="form-label text-muted small">Título Principal</label>
+                            <input type="text" name="titulo" id="inp_titulo" class="form-control" required>
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label text-muted small">Subtítulo</label>
+                            <input type="text" name="subtitulo" id="inp_subtitulo" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label text-muted small">Estado</label>
+                            <select name="estado" id="inp_estado" class="form-select">
+                                <option value="AO VIVO">AO VIVO (Pisca)</option>
+                                <option value="RETRANSMISSÃO">RETRANSMISSÃO (Azul)</option>
+                                <option value="GRAVAÇÃO">GRAVAÇÃO (Verde)</option>
+                                <option value="REPRISE">REPRISE (Laranja)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="d-flex gap-2">
+                            <button type="submit" id="btnSubmit" class="btn btn-primary w-100 py-2">💾 SALVAR</button>
+                            <button type="button" id="btnCancelar" onclick="cancelarEdicao()" class="btn btn-secondary w-100 py-2" style="display:none;">CANCELAR</button>
+                        </div>
+                    </form>
+
+                    <hr class="border-secondary">
+
+                    <button onclick="toggleOverlay()" class="btn w-100 py-3 {{ 'btn-toggle-hide' if visivel == 1 else 'btn-toggle-show' }}">
+                        {{ '🙈 OCULTAR OVERLAY' if visivel == 1 else '👁️ EXIBIR OVERLAY' }}
+                    </button>
+                </div>
+            </div>
+
+            <div class="col-md-7 mb-4">
+                <div class="card p-3 h-100">
+                    <h5 class="card-title mb-3 text-white">Programas Salvos</h5>
+                    <div class="table-responsive">
+                        <table class="table table-dark table-hover align-middle">
+                            <thead><tr><th>Info</th><th class="text-end">Ações</th></tr></thead>
+                            <tbody>
+                                {% for p in programas %}
+                                <tr class="{{ 'table-active-row' if p.ativo == 1 }}">
+                                    <td>
+                                        <div class="fw-bold">{{ p.titulo }}</div>
+                                        <div class="small text-muted">{{ p.subtitulo }}</div>
+                                        <span class="badge bg-secondary" style="font-size:0.7em">{{ p.estado }}</span>
+                                    </td>
+                                    <td class="text-end">
+                                        {% if p.ativo == 0 %}
+                                            <button onclick="usarPrograma({{p.id}})" class="btn btn-sm btn-outline-info" title="Exibir no OBS">▶</button>
+                                        {% endif %}
+                                        
+                                        <button onclick="carregarEdicao({{p.id}})" class="btn btn-sm btn-outline-warning" title="Editar">✏️</button>
+                                        
+                                        <button onclick="deletarPrograma({{p.id}})" class="btn btn-sm btn-outline-danger" title="Apagar">🗑️</button>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Função para carregar os dados no formulário (Modo Edição)
+        async function carregarEdicao(id) {
+            const res = await fetch(`/get_programa/${id}`);
+            const data = await res.json();
+            
+            // Preenche os campos
+            document.getElementById('id_programa').value = data.id;
+            document.getElementById('inp_titulo').value = data.titulo;
+            document.getElementById('inp_subtitulo').value = data.subtitulo;
+            document.getElementById('inp_estado').value = data.estado;
+
+            // Muda o visual do formulário
+            document.getElementById('formTitle').innerText = "Editando Programa #" + data.id;
+            document.getElementById('formTitle').classList.replace('text-info', 'text-warning');
+            
+            const btn = document.getElementById('btnSubmit');
+            btn.innerText = "🔄 ATUALIZAR";
+            btn.classList.replace('btn-primary', 'btn-warning');
+            btn.classList.add('text-dark');
+            
+            document.getElementById('btnCancelar').style.display = "block";
+        }
+
+        // Função para cancelar e voltar ao Modo Novo
+        function cancelarEdicao() {
+            document.getElementById('formSalvar').reset();
+            document.getElementById('id_programa').value = ""; // Limpa ID
+            
+            document.getElementById('formTitle').innerText = "Novo Programa";
+            document.getElementById('formTitle').classList.replace('text-warning', 'text-info');
+            
+            const btn = document.getElementById('btnSubmit');
+            btn.innerText = "💾 SALVAR";
+            btn.classList.replace('btn-warning', 'btn-primary');
+            btn.classList.remove('text-dark');
+            
+            document.getElementById('btnCancelar').style.display = "none";
+        }
+
+        // Lógica inteligente de Envio (Salvar ou Atualizar)
+        document.getElementById('formSalvar').onsubmit = async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const id = document.getElementById('id_programa').value;
+            
+            // Se tiver ID, usa a rota /editar, senão usa /add
+            const url = id ? '/editar' : '/add';
+            
+            await fetch(url, { method: 'POST', body: formData });
+            location.reload();
+        };
+
+        async function toggleOverlay() { await fetch('/toggle_visibilidade', { method: 'POST' }); location.reload(); }
+        async function usarPrograma(id) { await fetch(`/selecionar/${id}`, { method: 'POST' }); location.reload(); }
+        async function deletarPrograma(id) { if(confirm("Apagar?")) { await fetch(`/deletar/${id}`, { method: 'POST' }); location.reload(); } }
+    </script>
+</body>
+</html>

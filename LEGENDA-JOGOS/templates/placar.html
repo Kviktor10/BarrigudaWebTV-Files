@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Placar Ao Vivo</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div id="scoreboard-view" class="scoreboard-container">
+        <div style="position: relative;">
+            <div class="status-box" id="status">CARREGANDO...</div>
+            <div class="scoreboard-bar">
+                <div class="team">
+                    <span id="teamA">TIME A</span>
+                    <img id="logoA" src="" alt="Logo A" class="logo-img" onerror="this.src='https://via.placeholder.com/60'">
+                </div>
+                
+                <div class="score-time-box">
+                    <div class="main-score" id="score">0 X 0</div>
+                    <div class="timer" id="timer">00:00</div>
+                </div>
+
+                <div class="team">
+                    <img id="logoB" src="" alt="Logo B" class="logo-img" onerror="this.src='https://via.placeholder.com/60'">
+                    <span id="teamB">TIME B</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/static/script.js"></script>
+</body>
+</html>

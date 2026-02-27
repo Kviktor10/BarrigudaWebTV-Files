@@ -1,0 +1,158 @@
+:root {
+    --primary-color: #004d40;
+    --accent-color: #ffd700;
+    --text-white: #ffffff;
+    --bg-panel: rgba(0, 0, 0, 0.85);
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f0f0; /* Fundo verde chroma key possível: #00b140 */
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+/* Placar Styles */
+.scoreboard-container {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    padding-bottom: 50px;
+    background: url('https://images.unsplash.com/photo-1522778119026-d647f0565c6a?auto=format&fit=crop&w=1920&q=80') no-repeat center center/cover;
+}
+
+.scoreboard-bar {
+    display: flex;
+    align-items: center;
+    background: var(--bg-panel);
+    color: var(--text-white);
+    border-radius: 12px;
+    padding: 10px 20px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+    border: 2px solid var(--accent-color);
+}
+
+.status-box {
+    position: absolute;
+    top: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--accent-color);
+    color: #000;
+    padding: 5px 15px;
+    border-radius: 5px 5px 0 0;
+    font-weight: bold;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+}
+
+.team {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.logo-img {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    background: #fff;
+    border-radius: 50%;
+    padding: 2px;
+}
+
+.score-time-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 30px;
+    min-width: 150px;
+}
+
+.main-score {
+    font-size: 3rem;
+    font-weight: 800;
+    letter-spacing: 5px;
+    color: var(--accent-color);
+}
+
+.timer {
+    font-size: 1.2rem;
+    background: #333;
+    padding: 2px 10px;
+    border-radius: 4px;
+    margin-top: 5px;
+}
+
+.stoppage {
+    color: var(--accent-color);
+    font-size: 0.8rem;
+    margin-left: 5px;
+}
+
+/* Admin Styles */
+.admin-container {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.control-panel {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+.row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+input, select, button {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 100%;
+}
+
+button {
+    cursor: pointer;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    font-weight: bold;
+}
+
+button:hover {
+    opacity: 0.9;
+}
+
+.btn-danger { background: #d32f2f; }
+.btn-success { background: #388e3c; }
+.btn-warn { background: #fbc02d; color: #000; }
+
+/* Penalty Table Page */
+.penalty-table-page {
+    padding: 40px;
+    background: #fff;
+    min-height: 100vh;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 15px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+.result-gol { color: green; font-weight: bold; }
+.result-perdido { color: red; font-weight: bold; }

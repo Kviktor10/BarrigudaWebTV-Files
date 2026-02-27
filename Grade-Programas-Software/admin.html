@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Gerenciar Grade - CRUD</title>
+    <style>
+        :root { --primary: #2e7d32; --danger: #d32f2f; --bg: #f0f2f5; --accent: #1565c0; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); padding: 20px; display: flex; flex-direction: column; align-items: center; }
+        .card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); width: 100%; max-width: 700px; margin-bottom: 20px; }
+        h2 { color: #333; margin: 0 0 15px 0; border-bottom: 2px solid var(--primary); padding-bottom: 8px; }
+        
+        /* Formulário */
+        .form-group { display: grid; grid-template-columns: 1fr 2fr; gap: 15px; margin-bottom: 15px; }
+        label { font-weight: bold; font-size: 14px; margin-bottom: 5px; display: block; }
+        input, select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; }
+        
+        .days-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; background: #f9f9f9; padding: 10px; border-radius: 6px; border: 1px solid #eee; }
+        .days-grid label { font-weight: normal; font-size: 12px; margin: 0; display: flex; align-items: center; gap: 4px; }
+        
+        .btn-group { display: flex; gap: 10px; margin-top: 15px; }
+        button { flex: 1; padding: 12px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; color: white; transition: 0.3s; }
+        .btn-save { background: var(--primary); }
+        .btn-view { background: var(--accent); text-decoration: none; text-align: center; line-height: 1.2; display: flex; align-items: center; justify-content: center; }
+        
+        /* Tabela de Gerenciamento */
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 13px; }
+        th { background: #eee; text-align: left; padding: 10px; border-bottom: 2px solid #ddd; }
+        td { padding: 10px; border-bottom: 1px solid #eee; }
+        .actions { display: flex; gap: 5px; }
+        .btn-edit { background: #ffa000; padding: 5px 8px; font-size: 11px; }
+        .btn-del { background: var(--danger); padding: 5px 8px; font-size: 11px; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2 id="form-title">Novo Programa</h2>
+    <input type="hidden" id="edit-index" value="-1">
+    
+    <div class="form-group">
+        <div>
+            <label>Horário</label>
+            <input type="text" id="horario" placeholder="Ex: 11h">
+        </div>
+        <div>
+            <label>Nome do Programa</label>
+            <input type="text" id="nome" placeholder="Ex: Barriguda Notícias">
+        </div>
+    </div>
+
+    <label>Dias da Semana (Recorrência)</label>
+    <div class="days-grid">
+        <label><input type="checkbox" class="dia-check" value="SEGUNDA"> Seg</label>
+        <label><input type="checkbox" class="dia-check" value="TERÇA"> Ter</label>
+        <label><input type="checkbox" class="dia-check" value="QUARTA"> Qua</label>
+        <label><input type="checkbox" class="dia-check" value="QUINTA"> Qui</label>
+        <label><input type="checkbox" class="dia-check" value="SEXTA"> Sex</label>
+        <label><input type="checkbox" class="dia-check" value="SÁBADO/ DIAS EXCLUSIVOS"> Sáb</label>
+    </div>
+
+    <label>Ou Categoria Especial</label>
+    <select id="categoria-especial">
+        <option value="">-- Selecione se for especial --</option>
+        <option value="DIÁRIO">DIÁRIO</option>
+        <option value="SEMANAL">SEMANAL</option>
+        <option value="MENSAL">MENSAL</option>
+        <option value="TRIMESTRAL">TRIMESTRAL</option>
+        <option value="QUIZENAL">QUINZENAL</option>
+    </select>
+
+    <div class="btn-group">
+        <button class="btn-save" onclick="salvar()">Salvar Programação</button>
+        <a href="grade.html" target="_blank" class="btn-view">Ver Grade A4</a>
+    </div>
+</div>
+
+<div class="card">
+    <h2>Programas Cadastrados</h2>
+    <table id="tabela-dados">
+        <thead>
+            <tr>
+                <th>Horário</th>
+                <th>Programa</th>
+                <th>Categoria/Dia</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+<script>
+    let grade = JSON.parse(localStorage.getItem('gradeDados')) || [];
+
+    function salvar() {
+        const horario = document.getElementById('horario').value;
+        const nome = document.getElementById('nome').value;
+        const especial = document.getElementById('categoria-especial').value;
+        const checks = document.querySelectorAll('.dia-check:checked');
+        const editIndex = parseInt(document.getElementById('edit-index').value);
+
+        if (!horario || !nome) return alert("Campos obrigatórios vazios!");
+
+        // Se estamos editando, removemos o antigo para inserir o novo/atualizado
+        if (editIndex > -1) {
+            grade.splice(editIndex, 1);
+        }
+
+        if (especial) {
+            grade.push({ horario, nome, cat: especial });
+        } else if (checks.length > 0) {
+            checks.forEach(c => grade.push({ horario, nome, cat: c.value }));
+        } else {
+            return alert("Selecione um dia ou categoria!");
+        }
+
+        persistir();
+        resetForm();
+    }
+
+    function editar(index) {
+        const p = grade[index];
+        document.getElementById('horario').value = p.horario;
+        document.getElementById('nome').value = p.nome;
+        document.getElementById('edit-index').value = index;
+        document.getElementById('form-title').innerText = "Editando Programa";
+        
+        // Reset checkboxes e select
+        document.querySelectorAll('.dia-check').forEach(c => c.checked = (c.value === p.cat));
+        document.getElementById('categoria-especial').value = (["MENSAL", "TRIMESTRAL", "QUIZENAL"].includes(p.cat)) ? p.cat : "";
+        
+        window.scrollTo(0,0);
+    }
+
+    function deletar(index) {
+        if(confirm("Deseja excluir este item?")) {
+            grade.splice(index, 1);
+            persistir();
+        }
+    }
+
+    function persistir() {
+        localStorage.setItem('gradeDados', JSON.stringify(grade));
+        renderTable();
+    }
+
+    function renderTable() {
+        const tbody = document.querySelector('#tabela-dados tbody');
+        tbody.innerHTML = grade.map((p, i) => `
+            <tr>
+                <td>${p.horario}</td>
+                <td>${p.nome}</td>
+                <td>${p.cat}</td>
+                <td class="actions">
+                    <button class="btn-edit" onclick="editar(${i})">Editar</button>
+                    <button class="btn-del" onclick="deletar(${i})">Sair</button>
+                </td>
+            </tr>
+        `).join('');
+    }
+
+    function resetForm() {
+        document.getElementById('horario').value = "";
+        document.getElementById('nome').value = "";
+        document.getElementById('edit-index').value = "-1";
+        document.getElementById('form-title').innerText = "Novo Programa";
+        document.getElementById('categoria-especial').value = "";
+        document.querySelectorAll('.dia-check').forEach(c => c.checked = false);
+    }
+
+    window.onload = renderTable;
+</script>
+</body>
+</html>

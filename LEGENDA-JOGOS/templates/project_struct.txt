@@ -1,0 +1,7 @@
+projeto/
+├─── app.py              # Servidor Flask e Modelos SQLite
+├─── database.db         # Banco SQLite (gerado automaticamente)
+├───templates/           # HTMLs (Flask busca aqui)
+│    ├──── index.html    # O overlay
+│    └──── painel.html   # O controlador
+└─────────

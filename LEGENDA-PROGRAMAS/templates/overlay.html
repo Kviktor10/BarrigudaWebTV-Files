@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Overlay OBS Wide</title>
+    <style>
+        /* Paleta Barriguda Web TV */
+        :root {
+            --azul: #0093d3;
+            --amarelo: #f9ba13;
+            --laranja: #d87721;
+            --verde: #86ac41;
+            --vermelho: rgba(216, 119, 33);
+            --legenda-texto-cor: #333333;
+            --fundo-dark: rgba(134, 172, 65, 0.9);
+        }
+
+        body { 
+            font-family: 'Segoe UI', sans-serif; 
+            overflow: hidden; 
+            background-color: transparent; 
+            margin: 0; padding: 0;
+        }
+
+        /* Container Principal */
+        .container {
+            position: absolute;
+            bottom: 50px;
+            
+            /* --- ALTERAÇÃO AQUI (LARGURA 94%) --- */
+            width: 94%; 
+            left: 3%; /* 3% esquerda + 94% largura + 3% direita = 100% */
+            /* ------------------------------------ */
+
+            display: flex;
+            align-items: stretch;
+            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .hidden { opacity: 0; transform: translateY(100px); }
+
+        /* Box Esquerdo (Status) */
+        .badge {
+            display: flex; align-items: center; justify-content: center;
+            gap: 12px; padding: 0 25px;
+            color: white; font-weight: bolder; font-size: 32px;
+            text-transform: uppercase;
+            border-radius: 8px 0 0 8px;
+            min-width: 190px; /* Tamanho fixo para o status */
+            box-shadow: 2px 0 5px rgba(0,0,0,0.5);
+            z-index: 2; transition: background-color 0.3s;
+        }
+
+        /* Box Direito (Texto) */
+        .content {
+            background: var(--fundo-dark);
+            font-weight: bolder; color: var(--legenda-texto-cor);
+            padding: 15px 30px;
+            border-radius: 0 8px 8px 0;
+            
+            /* --- ALTERAÇÃO AQUI (PREENCHER ESPAÇO) --- */
+            flex: 1; /* Faz esse box ocupar todo o resto dos 94% */
+            /* ----------------------------------------- */
+            
+            display: flex; flex-direction: column; justify-content: center;
+            border-left: 6px solid white; transition: border-color 0.3s;
+        }
+
+        h1 { margin: 0; font-size: 32px; letter-spacing: -0.5px; line-height: 1; }
+        p { margin: 5px 0 0 0; font-size: 18px; color: #444; font-weight: bolder; }
+
+        .dot { width: 14px; height: 14px; background-color: white; border-radius: 50%; display: inline-block; }
+
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
+        @keyframes pulse-glow {
+            0% { box-shadow: 0 0 0 0 rgba(216, 119, 33, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(255, 0, 0, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0); }
+        }
+
+        .ativo-online { animation: pulse-glow 2s infinite; }
+        .ativo-online .dot { animation: blink 1s infinite; }
+    </style>
+</head>
+<body>
+
+    <div id="main_container" class="container hidden">
+        <div id="box_status" class="badge">
+            <span class="dot"></span>
+            <span id="txt_status">AO VIVO</span>
+        </div>
+        
+        <div id="box_info" class="content">
+            <h1 id="txt_titulo">CARREGANDO...</h1>
+            <p id="txt_subtitulo">Aguarde</p>
+        </div>
+    </div>
+
+    <script>
+        function atualizarOverlay() {
+            fetch('/get_active').then(r => r.json()).then(data => {
+                const container = document.getElementById('main_container');
+                if (data.visivel === 1) container.classList.remove('hidden');
+                else container.classList.add('hidden');
+
+                if (!data.titulo) return;
+
+                document.getElementById('txt_titulo').innerText = data.titulo;
+                document.getElementById('txt_subtitulo').innerText = data.subtitulo;
+                document.getElementById('txt_status').innerText = data.estado;
+
+                const boxStatus = document.getElementById('box_status');
+                const boxInfo = document.getElementById('box_info');
+                const estado = data.estado.toUpperCase();
+                let corFundo = "#333";
+
+                boxStatus.classList.remove('ativo-online');
+
+                if (estado === "AO VIVO") {
+                    corFundo = "var(--laranja)";
+                    boxStatus.classList.add('ativo-online');
+                } else if (estado === "RETRANSMISSÃO") corFundo = "var(--laranja)";
+                else if (estado === "GRAVAÇÃO") corFundo = "var(--laranja)";
+                else if (estado === "REPRISE") corFundo = "var(--laranja)";
+
+                boxStatus.style.backgroundColor = corFundo;
+                boxInfo.style.borderLeftColor = corFundo;
+            }).catch(err => console.error(err));
+        }
+        setInterval(atualizarOverlay, 1000);
+    </script>
+</body>
+</html>

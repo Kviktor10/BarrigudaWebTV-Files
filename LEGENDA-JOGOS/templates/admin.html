@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Painel de Controle</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body style="background: #e0e0e0;">
+    <div id="admin-view" class="admin-container">
+        <h1>Painel de Controle - Futebol</h1>
+        
+        <div class="control-panel">
+            <h3>Cronômetro: <span id="timeDisplay">00:00</span></h3>
+            <div class="row">
+                <button id="btnStart" class="btn-success">INICIAR TEMPO</button>
+                <button id="btnPause" class="btn-warn">PAUSAR</button>
+                <button id="btnResetTime" class="btn-danger">ZERAR TEMPO</button>
+            </div>
+        </div>
+
+        <div class="control-panel">
+            <h3>Dados da Partida</h3>
+            <div class="row">
+                <input type="text" id="inputNameA" placeholder="Nome Time A">
+                <input type="number" id="inputScoreA" placeholder="Gols A">
+            </div>
+            <div class="row">
+                <input type="text" id="inputNameB" placeholder="Nome Time B">
+                <input type="number" id="inputScoreB" placeholder="Gols B">
+            </div>
+             <div class="row">
+                <input type="text" id="inputLogoA" placeholder="URL Logo A">
+                <input type="text" id="inputLogoB" placeholder="URL Logo B">
+            </div>
+            <div class="row">
+                <select id="inputStatus">
+                    <option value="1º TEMPO">1º TEMPO</option>
+                    <option value="INTERVALO">INTERVALO</option>
+                    <option value="2º TEMPO">2º TEMPO</option>
+                    <option value="PRORROGAÇÃO">PRORROGAÇÃO</option>
+                    <option value="PÊNALTIS">PÊNALTIS</option>
+                    <option value="FIM DE JOGO">FIM DE JOGO</option>
+                </select>
+                <input type="number" id="inputStoppage" placeholder="Acréscimos (min)">
+            </div>
+            <button id="btnUpdateNames" class="btn-success">ATUALIZAR DADOS & TIMES</button>
+            <br><br>
+            <button id="btnUpdateScore">ATUALIZAR APENAS PLACAR</button>
+        </div>
+
+        <div class="control-panel">
+            <h3>Gerenciar Pênaltis</h3>
+            <div class="row">
+                <select id="penTeam">
+                    <option value="A">Time A</option>
+                    <option value="B">Time B</option>
+                </select>
+                <input type="text" id="penPlayer" placeholder="Nome do Jogador">
+                <select id="penResult">
+                    <option value="GOL">GOL</option>
+                    <option value="PERDIDO">PERDIDO</option>
+                </select>
+                <button id="btnAddPenalty">REGISTRAR PÊNALTI</button>
+            </div>
+             <button id="btnClearPenalties" class="btn-danger">LIMPAR HISTÓRICO DE PÊNALTIS</button>
+        </div>
+        
+        <div class="row">
+            <a href="/" target="_blank"><button>ABRIR PLACAR</button></a>
+            <a href="/penaltis" target="_blank"><button>ABRIR TABELA DE PÊNALTIS</button></a>
+        </div>
+    </div>
+    <script src="/static/script.js"></script>
+</body>
+</html>

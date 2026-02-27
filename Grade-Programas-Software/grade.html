@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Grade de Programação - Impressão</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Roboto:wght@400;700;900&display=swap');
+
+        body { margin: 0; padding: 0; background: #555; display: flex; justify-content: center; }
+
+        /* Container A4 */
+        .a4-page {
+            width: 210mm;
+            height: 297mm;
+            background: #2e7d32; /* Cor base */
+            background-image: 
+                radial-gradient(circle, #fbbf24 15%, transparent 16%),
+                linear-gradient(135deg, #1e3a1f 0%, #3d7a44 50%, #facc15 100%);
+            background-size: 25px 25px, 100% 100%;
+            padding: 20mm 15mm;
+            box-sizing: border-box;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header { text-align: center; margin-bottom: 30px; }
+        
+        h1 {
+            font-family: 'Oswald', sans-serif;
+            font-size: 65px;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            -webkit-text-stroke: 1px rgba(0,0,0,0.2);
+            text-shadow: 3px 3px 0px #000;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .boxer {
+            background: white;
+            border-radius: 12px;
+            min-height: 180px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .boxer-header {
+            background: #1a1a1a;
+            color: white;
+            font-family: 'Oswald', sans-serif;
+            font-size: 22px;
+            padding: 5px;
+            text-align: center;
+        }
+
+        .boxer-content { padding: 8px; color: #1a1a1a; flex-grow: 1; }
+
+        .program-row {
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #ddd;
+            padding: 4px 0;
+            font-family: 'Roboto', sans-serif;
+            font-size: 11px;
+            line-height: 1.2;
+        }
+
+        .prog-time {
+            font-weight: 900;
+            width: 45px;
+            border-right: 4px solid #ccc;
+            margin-right: 8px;
+            text-align: right;
+            padding-right: 4px;
+        }
+
+        .prog-name { font-weight: 700; flex: 1; }
+
+        @media print {
+            body { background: none; }
+            .a4-page { margin: 0; border: none; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="a4-page">
+    <header>
+        <h1>GRADE DE PROGRAMAÇÃO</h1>
+    </header>
+
+    <div class="grid-container" id="view-grid">
+        </div>
+</div>
+
+<script>
+    const categorias = [
+        "SEGUNDA", "TERÇA", "QUARTA", 
+        "QUINTA", "SEXTA", "SÁBADO/ DIAS EXCLUSIVOS",
+        "MENSAL", "TRIMESTRAL", "QUIZENAL", "SEMANAL", "DIÁRIO"
+    ];
+
+    function renderizar() {
+        const dados = JSON.parse(localStorage.getItem('gradeDados')) || [];
+        const container = document.getElementById('view-grid');
+
+        categorias.forEach(cat => {
+            const boxer = document.createElement('div');
+            boxer.className = 'boxer';
+            
+            // Filtra e Ordena por horário
+            let lista = dados.filter(d => d.cat === cat);
+            lista.sort((a, b) => {
+                const extrairMinutos = (str) => {
+                    const match = str.match(/(\d+)(?::(\d+))?/);
+                    if(!match) return 9999;
+                    return parseInt(match[1]) * 60 + (parseInt(match[2]) || 0);
+                };
+                return extrairMinutos(a.horario) - extrairMinutos(b.horario);
+            });
+
+            let contentHtml = lista.map(p => `
+                <div class="program-row">
+                    <div class="prog-time">${p.horario}</div>
+                    <div class="prog-name">${p.nome}</div>
+                </div>
+            `).join('');
+
+            boxer.innerHTML = `
+                <div class="boxer-header">${cat}</div>
+                <div class="boxer-content">${contentHtml}</div>
+            `;
+            container.appendChild(boxer);
+        });
+    }
+
+    window.onload = renderizar;
+</script>
+
+</body>
+</html>
