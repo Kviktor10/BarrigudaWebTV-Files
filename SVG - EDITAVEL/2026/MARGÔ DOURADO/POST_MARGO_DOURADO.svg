@@ -9,7 +9,7 @@
    id="svg1"
    sodipodi:docname="POST_MARGO_DOURADO.svg"
    inkscape:version="1.4.2 (f4327f4, 2025-05-13)"
-   inkscape:export-filename="C:\Users\Tv Barriguda\Desktop\Programação - Mídia\CARDS\MARGO DOURADO\POST_MARGO_DOURADO.png"
+   inkscape:export-filename="POST_MARGO_DOURADO.png"
    inkscape:export-xdpi="300"
    inkscape:export-ydpi="300"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
@@ -27,11 +27,11 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="px"
-     inkscape:zoom="1.1208333"
-     inkscape:cx="230.63197"
-     inkscape:cy="359.10781"
-     inkscape:window-width="1920"
-     inkscape:window-height="1009"
+     inkscape:zoom="0.56041665"
+     inkscape:cx="331.89592"
+     inkscape:cy="400.59481"
+     inkscape:window-width="1360"
+     inkscape:window-height="705"
      inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
@@ -149,10 +149,10 @@
        style="color-interpolation-filters:sRGB"
        inkscape:label="Drop Shadow"
        id="filter15"
-       x="-0.041327888"
-       y="-0.13481372"
-       width="1.0826558"
-       height="1.2696274">
+       x="-0.036778446"
+       y="-0.13455775"
+       width="1.0735569"
+       height="1.2691155">
       <feFlood
          result="flood"
          in="SourceGraphic"
@@ -222,9 +222,9 @@
        inkscape:label="Drop Shadow"
        id="filter15-4"
        x="-0.036340195"
-       y="-0.12169888"
+       y="-0.12149025"
        width="1.0726804"
-       height="1.2433978">
+       height="1.2429805">
       <feFlood
          result="flood"
          in="SourceGraphic"
@@ -425,9 +425,9 @@
        style="color-interpolation-filters:sRGB"
        inkscape:label="Drop Shadow"
        id="filter15-4-4"
-       x="-0.031088395"
+       x="-0.031565168"
        y="-0.2163279"
-       width="1.0621768"
+       width="1.0631303"
        height="1.4326558">
       <feFlood
          result="flood"
@@ -589,20 +589,20 @@
        x="1258.5703"
        y="413.1095"
        id="text1"
-       transform="matrix(0.51407802,0,0,0.51407802,-277.30069,-91.703845)"><tspan
+       transform="matrix(0.4762078,0,0,0.4762078,-225.04944,-83.884814)"><tspan
          sodipodi:role="line"
          x="1258.5703"
          y="413.1095"
          style="line-height:0.9;text-align:center;text-anchor:middle;stroke:none;stroke-width:62.8466"
          id="tspan2"><tspan
            id="tspan45"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:condensed;line-height:0.9;font-family:Impact;-inkscape-font-specification:'Impact Condensed';text-align:center;text-anchor:middle;fill:#ffffff;stroke:none;stroke-width:62.8466">LEITURA NOSSA</tspan><tspan
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:condensed;line-height:0.9;font-family:Impact;-inkscape-font-specification:'Impact Condensed';text-align:center;text-anchor:middle;fill:#ffffff;stroke:none;stroke-width:62.8466">A LEITURA NOSSA</tspan><tspan
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:condensed;line-height:0.9;font-family:Impact;-inkscape-font-specification:'Impact Condensed';text-align:center;text-anchor:middle"
            id="tspan4"> </tspan></tspan><tspan
          sodipodi:role="line"
          x="1258.5703"
-         y="607.25293"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0.9;font-family:Impact;-inkscape-font-specification:Impact;text-align:center;text-anchor:middle;stroke:none;stroke-width:62.8466"
+         y="607.93024"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0.9;font-family:Impact;-inkscape-font-specification:Impact;text-align:center;text-anchor:middle;fill:#ffffff;stroke:none;stroke-width:62.8466"
          id="tspan17">DE CADA DIA</tspan></text>
     <text
        xml:space="preserve"
@@ -632,7 +632,7 @@
          x="1002.5673"
          y="413.1095"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:1;font-family:Impact;-inkscape-font-specification:Impact;text-align:center;text-anchor:middle;fill:#ffffff;stroke:none;stroke-width:62.8466"
-         id="tspan23-2">TODA  TERÇA, ÀS 14H</tspan></text>
+         id="tspan23-2">TODA  TERÇA, ÀS 11H</tspan></text>
     <image
        width="186.03221"
        height="42.588665"
